@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SignalR Echo</title>
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.signalR-2.1.1.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        function htmlEncode(value) {
+            return $("<div/>").text(value).html();
+        }
+
+        function addMsg(msg) {
+            $("#messages").append("<li>" + htmlEncode(msg) + "</li>");
+        }
+
+        $(function () {
+            var connection = $.connection("/hackathon", "name=" + $("#name").val(), true);;
+
+            connection.received(function (data) {
+                addMsg(data);
+            });
+
+            connection.error(function (err) {
+                addMsg("Error: " + err);
+            });
+
+            addMsg("Connecting...");
+            connection.start(function () {
+                addMsg("Connected.");
+                $("#send").click(function () {
+                    connection.send($("#msg").val());
+                });
+            });
+        });
+    </script>
+    
+    <table>
+        <tr>
+            <td><span>Message:</span></td>
+            <input type="hidden" id="name" value="ServerHarness"/>
+            <td><input type="text" id="msg" /></td>
+            <td><input type="button" value="Send" id="send" /></td>
+        </tr>
+    </table>
+    <ul id="messages"></ul>
+</body>
+</html>
