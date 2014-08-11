@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>SignalR Echo</title>
+    <title>SignalR Window</title>
     <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="Scripts/jquery.signalR-2.1.1.min.js"></script>
 </head>
@@ -12,12 +12,14 @@
         }
 
         function addMsg(msg) {
+            //$("#messages").append("<li>" + htmlEncode(msg) + "</li>");
             $("#messages").append("<li>" + htmlEncode(msg) + "</li>");
+            document.getElementById('buttom').scrollIntoView();
         }
 
         $(function () {
-            var connection = $.connection("/hackathon", "name=" + $("#name").val(), true);;
-
+            var connection = $.connection("/hackathon", "name=" + $("#name").val(), true);
+            
             connection.received(function (data) {
                 addMsg(data);
             });
@@ -45,5 +47,6 @@
         </tr>
     </table>
     <ul id="messages"></ul>
+    <div id="buttom"/>
 </body>
 </html>
